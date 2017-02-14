@@ -1,0 +1,11 @@
+{
+	"ImportPath": "github.com/fate-lovely/code-poster",
+	"GoVersion": "go1.7",
+	"GodepVersion": "v74",
+	"Deps": [
+		{
+			"ImportPath": "github.com/nfnt/resize",
+			"Rev": "891127d8d1b52734debe1b3c3d7e747502b6c366"
+		}
+	]
+}
