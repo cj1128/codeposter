@@ -7,6 +7,7 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"regexp"
@@ -22,55 +23,65 @@ type CodePoster struct {
 	width      int
 	height     int
 	fontFamily string
-	fontSize   float64
+	fontSize   string
+	// derived fields
+	rows int
+	cols int
+	data []*PostData
 }
 
-var bgColor = color.RGBA{
-	R: 0xee,
-	G: 0xee,
-	B: 0xee,
-	A: 0xee,
+type PostData struct {
+	char  rune
+	color color.Color
 }
 
-// get character and color of position at row and col
-func (cp *CodePoster) Get(row, col int) (rune, color.Color) {
-	index := row*cp.Cols() + col
-	return cp.source[index], cp.getColor(row, col)
+func (cp *CodePoster) render() []*PostData {
+	var data []*PostData
+	for row := 0; row < cp.rows; row++ {
+		for col := 0; col < cp.cols; col++ {
+			index := row*cp.cols + col
+			data = append(data, &PostData{
+				cp.source[index],
+				cp.getColor(row, col),
+			})
+		}
+	}
+	return data
 }
 
 func (cp *CodePoster) getColor(row, col int) color.Color {
-	// pixel coordinate
+	// pixel coordinates
 	x := col*cp.charWidth + cp.charWidth/2
 	y := row*cp.charHeight + cp.charHeight/2
+
+	// coordinates relative to image
 	imgX := x - (cp.width-cp.img.Bounds().Max.X)/2
 	imgY := y - (cp.height-cp.img.Bounds().Max.Y)/2
+
+	// outside of image
 	if imgX < 0 || imgX > cp.img.Bounds().Max.X {
-		return bgColor
+		return nil
 	}
 	if imgY < 0 || imgY > cp.img.Bounds().Max.Y {
-		return bgColor
+		return nil
 	}
+
 	result := cp.img.At(imgX, imgY)
 	_, _, _, a := result.RGBA()
+
+	// full transparent
 	if a == 0 {
-		return bgColor
+		return nil
 	}
+
 	return result
-}
-
-func (cp *CodePoster) Rows() int {
-	return cp.height / cp.charHeight
-}
-
-func (cp *CodePoster) Cols() int {
-	return cp.width / cp.charWidth
 }
 
 func newCodePoster(
 	source string, // source code
 	img image.Image, // poster image
 	fontFamily string,
-	fontSize float64,
+	fontSize string,
 	charWidth, charHeight int, // single character width and height, in pixel
 	width, height int, // the whole poster width and height, in pixel
 ) *CodePoster {
@@ -90,7 +101,7 @@ func newCodePoster(
 		}
 	}
 
-	return &CodePoster{
+	cp := &CodePoster{
 		source:     []rune(regex.ReplaceAllString(source, "")),
 		img:        img,
 		charWidth:  charWidth,
@@ -99,5 +110,24 @@ func newCodePoster(
 		height:     height,
 		fontFamily: fontFamily,
 		fontSize:   fontSize,
+		rows:       height / charHeight,
+		cols:       width / charWidth,
 	}
+
+	cp.data = cp.render()
+
+	return cp
+}
+
+// return bgColor if color is nil
+func colorToString(c color.Color) string {
+	if c == nil {
+		return bgColor
+	}
+	r, g, b, a := c.RGBA()
+	r_ := int((float64(r) / 0xffff) * 0xff)
+	g_ := int((float64(g) / 0xffff) * 0xff)
+	b_ := int((float64(b) / 0xffff) * 0xff)
+	a_ := float64(a) / 0xffff
+	return fmt.Sprintf("rgba(%d,%d,%d,%f)", r_, g_, b_, a_)
 }

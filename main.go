@@ -13,42 +13,107 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
+// set by -ldflags
+var appVersion string
+
+var (
+	sourcePath   string
+	imgPath      string
+	charWidth    int
+	charHeight   int
+	width        int
+	height       int
+	font         string
+	fontSize     string
+	bgColor      string
+	outputFormat string
+)
+
+func parseFlags() {
+	kingpin.Flag("charwidth", "single character width in pixels").
+		Default("7").
+		IntVar(&charWidth)
+	kingpin.Flag("charheight", "single character height in pixels").
+		Default("14").
+		IntVar(&charHeight)
+	// font size must corresponding to char width and char height
+	kingpin.Flag("fontsize", "font size, valid css unit, must corresponding to char width and char height").
+		Default("11.65px").
+		StringVar(&fontSize)
+
+	kingpin.Flag("width", "output poster width in pixels").
+		Default("800").
+		IntVar(&width)
+	kingpin.Flag("height", "output poster height in pixels").
+		Default("760").
+		IntVar(&height)
+
+	kingpin.Flag("font", "font family, please use monospace font,").
+		Default("Hack").
+		StringVar(&font)
+	kingpin.Flag("bgcolor", "background color, valid css unit").
+		Default("#eee").
+		StringVar(&bgColor)
+	kingpin.Flag("output", "specify output format, [canvs | dom]").
+		Default("canvas").
+		EnumVar(&outputFormat, "canvas", "dom")
+	kingpin.CommandLine.HelpFlag.Short('h')
+
+	kingpin.Arg("source", "source code path").
+		Required().
+		StringVar(&sourcePath)
+	kingpin.Arg("image", "image path").
+		Required().
+		StringVar(&imgPath)
+
+	kingpin.Version(appVersion)
+	kingpin.Parse()
+}
+
+func fatalln(args ...interface{}) {
+	log.Println(args...)
+	os.Exit(1)
+}
+
 func main() {
-	if len(os.Args) < 3 {
-		fmt.Println("usage: code-poster [source] [image]")
-		os.Exit(1)
-	}
-	sourcePath := os.Args[1]
-	imgPath := os.Args[2]
+	parseFlags()
 
 	source, err := ioutil.ReadFile(sourcePath)
 	if err != nil {
-		log.Fatal(err)
+		fatalln("open source code error:", err)
 	}
 
 	imgFile, err := os.Open(imgPath)
 	if err != nil {
-		log.Fatal(err)
+		fatalln("open image error:", err)
 	}
 	defer imgFile.Close()
 
 	img, _, err := image.Decode(imgFile)
 	if err != nil {
-		log.Fatal(err)
+		fatalln("decode image error:", err)
 	}
 
 	codePoster := newCodePoster(
 		string(source),
 		img,
-		"Hack",
-		8.3,
-		5,
-		10,
-		800,
-		800,
+		font,
+		fontSize,
+		charWidth,
+		charHeight,
+		width,
+		height,
 	)
-	output := htmlOutput(codePoster)
+	var output string
+	if outputFormat == "canvas" {
+		output = canvasOutput(codePoster)
+	}
+	if outputFormat == "dom" {
+		output = domOutput(codePoster)
+	}
 	fmt.Println(output)
 }
