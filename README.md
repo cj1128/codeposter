@@ -8,7 +8,12 @@
 
 ### 下载
 
-[二进制程序](http://github.com/fate-lovely/codeposter/releases)
+下载相关平台的[二进制程序](http://github.com/fate-lovely/codeposter/releases)，在终端中添加执行权限就可以执行了（Windows不需要）。
+
+```bash
+$ chmod +x codeposter_darwin_amd64
+$ ./codeposter_darwin_amd64 --help
+```
 
 ### Go
 
@@ -57,7 +62,7 @@ Args:
 ### Gopher
 
 ```bash
-codeposer jquery.min.js go.png > go.html
+codeposter jquery.min.js go.png > go.html
 ```
 
 ![](http://ok2pw0x6d.bkt.clouddn.com/Fs-kAGAGyrsTVZG7wzsv_DpyVWm-.png)
