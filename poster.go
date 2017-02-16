@@ -35,11 +35,13 @@ type PostData struct {
 	color color.Color
 }
 
+// we can make this concurrent, but it's not necessary
+// cause this is fast enough
 func (cp *CodePoster) render() []*PostData {
 	var data []*PostData
 	for row := 0; row < cp.rows; row++ {
 		for col := 0; col < cp.cols; col++ {
-			index := row*cp.cols + col
+			index := (row*cp.cols + col) % len(cp.source)
 			data = append(data, &PostData{
 				cp.source[index],
 				cp.getColor(row, col),

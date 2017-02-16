@@ -34,16 +34,19 @@ var (
 )
 
 func parseFlags() {
+	kingpin.Flag("font", "font family, please use monospace font,").
+		Default("Hack").
+		StringVar(&font)
+	// font size must corresponding to char width and char height
+	kingpin.Flag("fontsize", "font size, valid css font size, must corresponding to char width and char height").
+		Default("11.65px").
+		StringVar(&fontSize)
 	kingpin.Flag("charwidth", "single character width in pixels").
 		Default("7").
 		IntVar(&charWidth)
 	kingpin.Flag("charheight", "single character height in pixels").
 		Default("14").
 		IntVar(&charHeight)
-	// font size must corresponding to char width and char height
-	kingpin.Flag("fontsize", "font size, valid css unit, must corresponding to char width and char height").
-		Default("11.65px").
-		StringVar(&fontSize)
 
 	kingpin.Flag("width", "output poster width in pixels").
 		Default("800").
@@ -52,13 +55,10 @@ func parseFlags() {
 		Default("760").
 		IntVar(&height)
 
-	kingpin.Flag("font", "font family, please use monospace font,").
-		Default("Hack").
-		StringVar(&font)
-	kingpin.Flag("bgcolor", "background color, valid css unit").
+	kingpin.Flag("bgcolor", "background color, valid css color").
 		Default("#eee").
 		StringVar(&bgColor)
-	kingpin.Flag("output", "specify output format, [canvs | dom]").
+	kingpin.Flag("output", "specify output format, [canvas | dom]").
 		Default("canvas").
 		EnumVar(&outputFormat, "canvas", "dom")
 	kingpin.CommandLine.HelpFlag.Short('h')
