@@ -13,7 +13,7 @@
 ### Go
 
 ```bash
-go git -u github.com/fate-lovely/codeposter
+go get -u github.com/fate-lovely/codeposter
 ```
 
 ## 参数
