@@ -1,8 +1,8 @@
 # Code Poster
 
-生成代码明信片。支持代码压缩，图片缩放，自动居中。
+生成代码明信片。支持代码压缩，图片缩放，自动居中。[使用Go编写代码明信片生成器](http://cjting.me/golang/2017-02-18-%E4%BD%BF%E7%94%A8Go%E7%BC%96%E5%86%99%E4%BB%A3%E7%A0%81%E6%98%8E%E4%BF%A1%E7%89%87%E7%94%9F%E6%88%90%E5%99%A8.html)。
 
-![](http://ok2pw0x6d.bkt.clouddn.com/Fuo-iJqj2LSeIgLV8Cm_vcWAGCBO.png)
+![](http://ww1.sinaimg.cn/large/9b85365dgy1fcujv2s1khj20m80l4n55)
 
 ## 安装
 
@@ -65,7 +65,7 @@ Args:
 codeposter jquery.min.js go.png > go.html
 ```
 
-![](http://ok2pw0x6d.bkt.clouddn.com/Fs-kAGAGyrsTVZG7wzsv_DpyVWm-.png)
+![](http://ww1.sinaimg.cn/large/9b85365dgy1fcujvjjomgj20m70l37ce)
 
 ### Heart
 
@@ -73,7 +73,7 @@ codeposter jquery.min.js go.png > go.html
 codeposter jquery.min.js heart.png > heart.html
 ```
 
-![](http://ok2pw0x6d.bkt.clouddn.com/FqAgqcFdvvrQ-gcUrNfi1VwLXBtP.png)
+![](http://ww1.sinaimg.cn/large/9b85365dgy1fcujw0juyxj20m70l3wmc)
 
 ### Diamond
 
@@ -81,4 +81,4 @@ codeposter jquery.min.js heart.png > heart.html
 codeposter jquery.min.js diamond.png > diamond.html
 ```
 
-![](http://ok2pw0x6d.bkt.clouddn.com/FjlOnvZSWkEoOlPFRJT1bFNZV6qz.png)
+![](http://ww1.sinaimg.cn/large/9b85365dgy1fcujw08zu4j20m70l47ck)
