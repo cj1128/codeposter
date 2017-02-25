@@ -6,6 +6,12 @@
   <img src="http://ww1.sinaimg.cn/large/9b85365dgy1fcujv2s1khj20m80l4n55" alt="rocket code poster" />
 </p>
 
+## Change Log
+
+### v0.1.1
+
+- 处理`jpeg`以及`gif`类型的图片
+
 ## 安装
 
 ### 下载
