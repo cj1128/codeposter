@@ -9,10 +9,13 @@ package main
 import (
 	"fmt"
 	"image"
-	_ "image/png"
+	"image/gif"
+	"image/jpeg"
+	"image/png"
 	"io/ioutil"
 	"log"
 	"os"
+	fp "path/filepath"
 
 	"gopkg.in/alecthomas/kingpin.v2"
 )
@@ -93,7 +96,19 @@ func main() {
 	}
 	defer imgFile.Close()
 
-	img, _, err := image.Decode(imgFile)
+	var img image.Image
+	ext := fp.Ext(imgPath)
+	switch ext {
+	case ".jpg":
+		img, err = jpeg.Decode(imgFile)
+	case ".png":
+		img, err = png.Decode(imgFile)
+	case ".gif":
+		img, err = gif.Decode(imgFile)
+	default:
+		img, err = jpeg.Decode(imgFile)
+	}
+
 	if err != nil {
 		fatalln("decode image error:", err)
 	}
