@@ -1,9 +1,3 @@
-/*
-* @Author: CJ Ting
-* @Date: 2017-02-14 19:10:43
-* @Email: fatelovely1128@gmail.com
- */
-
 package main
 
 import (
@@ -35,10 +29,11 @@ var (
 	outputFormat string
 )
 
-func parseFlags() {
+func initFlags() {
 	kingpin.Flag("font", "font family, please use monospace font,").
 		Default("Hack").
 		StringVar(&font)
+
 	// font size must corresponding to char width and char height
 	kingpin.Flag("fontsize", "font size, valid css font size, must corresponding to char width and char height").
 		Default("11.65px").
@@ -73,7 +68,7 @@ func parseFlags() {
 		StringVar(&imgPath)
 
 	kingpin.Version(appVersion)
-	kingpin.Parse()
+	kingpin.CommandLine.VersionFlag.Short('v')
 }
 
 func fatalln(args ...interface{}) {
@@ -82,7 +77,14 @@ func fatalln(args ...interface{}) {
 }
 
 func main() {
-	parseFlags()
+	initFlags()
+
+	if len(os.Args) == 1 {
+		kingpin.Usage()
+		os.Exit(0)
+	}
+
+	kingpin.Parse()
 
 	source, err := ioutil.ReadFile(sourcePath)
 	if err != nil {

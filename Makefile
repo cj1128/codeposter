@@ -1,4 +1,4 @@
-flags := -X main.appVersion=`cat VERSION`
+flags := -X main.appVersion=`git tag --points-at HEAD`
 build_flags := $(flags) -s -w
 
 install:

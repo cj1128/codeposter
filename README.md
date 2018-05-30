@@ -1,16 +1,12 @@
 # Code Poster
 
-生成代码明信片。支持代码压缩，图片缩放，自动居中。[使用Go编写代码明信片生成器](http://cjting.me/golang/2017-02-18-%E4%BD%BF%E7%94%A8Go%E7%BC%96%E5%86%99%E4%BB%A3%E7%A0%81%E6%98%8E%E4%BF%A1%E7%89%87%E7%94%9F%E6%88%90%E5%99%A8.html)。
+生成代码明信片。支持代码压缩，图片缩放，自动居中。
+
+具体实现过程见[使用Go编写代码明信片生成器](http://cjting.me/golang/write-a-code-post-generator-with-go/)。
 
 <p align="center">
   <img src="http://ww1.sinaimg.cn/large/9b85365dgy1fcujv2s1khj20m80l4n55" alt="rocket code poster" />
 </p>
-
-## Change Log
-
-### v0.1.1
-
-- 处理`jpeg`以及`gif`类型的图片
 
 ## 安装
 
@@ -96,3 +92,9 @@ codeposter jquery.min.js diamond.png > diamond.html
 <p align="center">
   <img src="http://ww1.sinaimg.cn/large/9b85365dgy1fcujw08zu4j20m70l47ck" alt="diamond code poster" />
 </p>
+
+## Change Log
+
+### v0.1.1
+
+- 处理`jpeg`以及`gif`类型的图片
