@@ -1,100 +1,96 @@
 # Code Poster
 
-生成代码明信片。支持代码压缩，图片缩放，自动居中。
-
-具体实现过程见[使用Go编写代码明信片生成器](http://cjting.me/golang/write-a-code-post-generator-with-go/)。
+使用 SDL 生成代码明信片，相关博客 [使用 Go 编写代码明信片生成器](http://cjting.me/golang/write-a-code-post-generator-with-go/)。
 
 <p align="center">
-  <img src="http://ww1.sinaimg.cn/large/9b85365dgy1fcujv2s1khj20m80l4n55" alt="rocket code poster" />
+  <img src="./examples/rocket.codeposter.png" alt="rocket code poster" />
 </p>
 
 ## 安装
 
-### 下载
-
-下载相关平台的[二进制程序](http://github.com/fate-lovely/codeposter/releases)，在终端中添加执行权限就可以执行了（Windows不需要）。
-
 ```bash
-$ chmod +x codeposter_darwin_amd64
-$ ./codeposter_darwin_amd64 --help
+$ go get -v github.com/cj1128/codeposter
 ```
 
-### Go
+或者去 [Releases](https://github.com/cj1128/codeposter/releases) 中下载编译好的二进制程序。
 
-```bash
-go get -u github.com/fate-lovely/codeposter
-```
-
-## 参数
+## 使用
 
 ```bash
 $ codeposter -h
-usage: codeposter [<flags>] <source> <image>
+usage: codeposter [<flags>] <source>
 
 Flags:
   -h, --help                Show context-sensitive help (also try --help-long
                             and --help-man).
-      --font="Hack"         font family, please use monospace font,
-      --fontsize="11.65px"  font size, valid css font size, must corresponding
-                            to char width and char height
-      --charwidth=7         single character width in pixels
-      --charheight=14       single character height in pixels
-      --width=800           output poster width in pixels
-      --height=760          output poster height in pixels
-      --bgcolor="#eee"      background color, valid css color
-      --output=canvas       specify output format, [canvas | dom]
-      --version             Show application version.
+      --font=FONT           specify font file (default: Hack-Regular.ttf bundled
+                            in binary)
+      --font-size=12        font size
+      --width=120           poster width in characters
+      --height=50           poster height in characters
+      --code-color=#e9e9e9  source code color, '#rgb' or '#rrggbb' or
+                            '#rrggbbaa'
+      --bg-color=#fff       background color, '#rgb' or '#rrggbb' or '#rrggbbaa'
+      --img=IMG             image used to render poster (default: gopher.png
+                            bundled in binary
+      --padding=1,2         padding space in characters, e.g. 1,2
+  -v, --version             Show application version.
 
 Args:
   <source>  source code path
-  <image>   image path
 ```
 
-- `font`：字体，默认使用`Hack`，务必选择一款等宽字体
-- `fontsize`：字体大小，选个一个合适的字体大小，保证对应的字符的宽度和高度是一个整数
-- `charwidth`：单个字符宽度，这个需要在浏览器中手动测量
-- `charheight`：单个字符高度，这个也需要在浏览器中手动测量
-- `width`：最终明信片的宽度，单位是像素，整数
-- `height`：最终明星片的高度，单位是像素，整数
-- `bgcolor`：背景颜色
-- `output`：输出格式，目前支持`dom`和`canvas`。注意，dom格式将每个字符渲染为一个div，十分消耗性能，默认格式为canvas。
+- `font`：字体，默认使用 [Hack-Regular.ttf](./static/Hack-Regular.ttf)，打包在二进制中
+- `font-size`：字体大小
+- `width`：明信片的宽度，单位是字符
+- `height`：明信片的高度，单位是字符
+- `code-color`: 代码的颜色，默认为 `#e9e9e9`
+- `bg-color`: 背景颜色，默认为 `#fff`
+- `img`: 渲染明信片的图片，支持 png, jpg, gif，默认为 [gopher.png](./static/gopher.png)，打包在二进制中
+- `padding`: 上下和左右间距，单位是字符。可以使用 `--pading 1` 设置上下和左右也可以使用 `--pading 1,2` 分别设置
 
 ## 示例
-
-进入`example`文件夹。
 
 ### Gopher
 
 ```bash
-codeposter jquery.min.js go.png > go.html
+$ codeposter examples/jquery.min.js --img examples/gopher.png
 ```
 
 <p align="center">
-  <img src="http://ww1.sinaimg.cn/large/9b85365dgy1fcujvjjomgj20m70l37ce" alt="gopher code poster" />
+  <img src="./examples/gopher.codeposter.png" />
 </p>
 
 ### Heart
 
 ```bash
-codeposter jquery.min.js heart.png > heart.html
+$ codeposter examples/jquery.min.js --img examples/heart.png
 ```
 
 <p align="center">
-  <img src="http://ww1.sinaimg.cn/large/9b85365dgy1fcujw0juyxj20m70l3wmc" alt="heart code poster" />
+  <img src="./examples/heart.codeposter.png" />
 </p>
 
 ### Diamond
 
 ```bash
-codeposter jquery.min.js diamond.png > diamond.html
+$ codeposter examples/jquery.min.js --img examples/diamond.png
 ```
 
 <p align="center">
-  <img src="http://ww1.sinaimg.cn/large/9b85365dgy1fcujw08zu4j20m70l47ck" alt="diamond code poster" />
+  <img src="./examples/diamond.codeposter.png" />
 </p>
 
 ## Change Log
 
+### v0.2.0
+
+- 不再使用览器渲染方案，改用 SDL 渲染，直接生成图片
+
 ### v0.1.1
 
-- 处理`jpeg`以及`gif`类型的图片
+- 处理 `jpeg` 以及 `gif` 类型的图片
+
+### v0.1.0
+
+- 完成基本功能
