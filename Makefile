@@ -1,7 +1,6 @@
 SHELL := /bin/bash
 
 flags := -X main.appVersion=`git tag --points-at HEAD`
-build_flags := $(flags) -s -w
 
 install:
 	go install -ldflags "$(flags)"
@@ -13,7 +12,9 @@ build:
 		exit 1 ; \
 	fi
 
-	go-bindata -prefix static static
+	# windows
+	CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc GOOS=windows GOARCH=amd64 go build -v -tags static -ldflags "-s -w" -o "tmp/codeposter_windows_amd64.exe"
 
-	gox -arch="386 amd64" -os="darwin linux windows" -ldflags="$(build_flags)" -output="tmp/{{.Dir}}_{{.OS}}_{{.Arch}}"
+	# mac
+	go build -v -tags static -ldflags "-s -w" -o "tmp/codeposter_darwin_amd64"
 .PHONY: build

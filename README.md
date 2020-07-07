@@ -8,11 +8,23 @@
 
 ## 安装
 
+因为 [go-sdl2](https://github.com/veandco/go-sdl2) 使用了 CGO，编译比较复杂，建议在 [Releases](https://github.com/cj1128/codeposter/releases) 中下载编译好的二进制程序。
+
+### 编译
+
+主机为 Mac，静态编译到 Mac：
+
 ```bash
-$ go get -v github.com/cj1128/codeposter
+$ go build -v -tags static -ldflags "-s -w"
 ```
 
-或者去 [Releases](https://github.com/cj1128/codeposter/releases) 中下载编译好的二进制程序。
+交叉编译到 Windows:
+
+```bash
+$ CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc GOOS=windows GOARCH=amd64 go build -v -tags static -ldflags "-s -w"
+```
+
+Linux 无法在 Mac 上进行交叉编译，在 Linux 进行编译可以参考 [go-sdl2](https://github.com/veandco/go-sdl2) 的文档说明。
 
 ## 使用
 
