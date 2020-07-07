@@ -97,7 +97,7 @@ $ codeposter examples/jquery.min.js --img examples/diamond.png
 
 ### v0.2.0
 
-- 不再使用览器渲染方案，改用 SDL 渲染，直接生成图片
+- 不再使用浏览器渲染方案，改用 SDL 渲染，直接生成图片
 
 ### v0.1.1
 
